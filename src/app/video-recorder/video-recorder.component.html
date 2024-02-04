@@ -1,0 +1,41 @@
+<!-- Container for the entire webcam recorder interface -->
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 overflow-auto px-4">
+    <!-- Header section with the title and description -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800">Webcam Recorder</h1>
+        <p class="text-gray-500">Record and preview your video below.</p>
+    </div>
+
+    <!-- Video Element for live webcam feed -->
+    <div class="mb-6" *ngIf="!isRecorded">
+        <video #videoElement class="rounded-md shadow-lgj bg-black mx-auto" style="width: 640px; height: 480px;" autoplay muted></video>
+    </div>
+
+    <!-- Video Preview section, displayed when recording is not active and a preview is available -->
+    <div *ngIf="(!isRecording && previewUrl) || isRecorded" class="mb-6">
+        <p class="text-gray-600 mb-2">Preview your recording:</p>
+        <video class="rounded-md shadow-lg bg-black mx-auto" style="width: 640px; height: 480px;" controls [src]="previewUrl"></video>
+    </div>
+
+    <!-- Button section for starting and stopping recording -->
+    <div class="space-x-4 mb-6">
+        <button *ngIf="!isRecording && !recordingConfirmed && !isRecorded" (click)="startRecording()" class="px-6 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-300">Start Recording</button>
+        <button *ngIf="isRecording" (click)="stopRecording()" class="px-6 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-300">Stop Recording</button>
+    </div>
+
+    <!-- Button section for confirming and redoing the recording -->
+    <div class="space-x-4 mb-6" *ngIf="!isRecording && isRecorded && !recordingConfirmed">
+        <button (click)="confirmRecording()" class="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300">Confirm</button>
+        <button (click)="redoRecording()" class="px-4 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-300 mb-5">Redo</button>
+    </div>
+
+    
+    <div class="space-x-4 mb-6">
+        <button *ngIf="recordingConfirmed" (click)="startOver()" class="px-6 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-300">Start New Recording</button>
+    </div>
+    
+
+    <!-- Message displayed when recording is confirmed and uploading -->
+        <p-toast></p-toast>
+    
+</div>
