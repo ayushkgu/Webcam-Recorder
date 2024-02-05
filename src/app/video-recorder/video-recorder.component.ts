@@ -5,6 +5,9 @@ import { ToastModule } from 'primeng/toast';
 import * as RecordRTC from 'recordrtc';
 import { FirebaseService } from '../firebase.service';
 
+/**
+ * Component to handle video recording from a webcam and uploading it to Firebase.
+ */
 @Component({
   selector: 'app-video-recorder',
   templateUrl: './video-recorder.component.html',
@@ -22,16 +25,17 @@ export class VideoRecorderComponent {
   stream!: MediaStream;
   previewUrl: string | null = null;
 
+  // Inject FirebaseService and MessageService via constructor
   constructor(private firebaseService: FirebaseService, private messageService: MessageService) {}
 
+  // OnInit lifecycle hook to prefetch media stream
   ngOnInit() {
-    // Prefetch the media stream
     this.prefetchMediaStream();
   }
 
+  // Function to request user media and set up video element for stream playback
   async prefetchMediaStream() {
     try {
-      // Request access to the user's webcam and microphone
       this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
   
       this.videoElement.nativeElement.srcObject = this.stream;
@@ -40,14 +44,14 @@ export class VideoRecorderComponent {
   
       this.videoElement.nativeElement.play();
   
-      this.isLoading = false; // Update the loading state
+      this.isLoading = false; 
     } catch (error) {
       console.error('Error prefetching media stream:', error);
-      // Handle errors, such as the user denying camera access
+    
     }
   }
   
-
+  // Function to begin recording the video from the webcam
   async startRecording() {
     this.isRecording = true;
     this.recordingConfirmed = false;
@@ -64,17 +68,16 @@ export class VideoRecorderComponent {
     this.recordRTC.startRecording();
   }
 
+  // Function to stop recording and create a preview URL
   async stopRecording() {
     if (this.recordRTC) {
       await new Promise<void>((resolve) => {
         this.recordRTC.stopRecording(() => {
           this.isRecording = false;
           const recordedBlob = this.recordRTC.getBlob();
-          // Create a URL for the Blob and set it for preview
           this.previewUrl = URL.createObjectURL(recordedBlob);
           console.log("Preview URL" + this.previewUrl);
 
-          // Stop all media tracks
           this.stream.getTracks().forEach(track => track.stop());
           resolve();
 
@@ -84,15 +87,14 @@ export class VideoRecorderComponent {
     }
   }
 
-
+  // Function to handle confirmation of recording and initiate upload
   confirmRecording() {
     this.uploadVideo();
   }
 
-
+  // Function to redo the recording
   redoRecording() {
     this.recordingConfirmed = false;
-    // Revoke the object URL to release memory
     if (this.previewUrl) {
       URL.revokeObjectURL(this.previewUrl);
     }
@@ -101,9 +103,9 @@ export class VideoRecorderComponent {
     this.isRecorded = false;
   }
 
+  // Function to cancel the current recording
   cancelRecording() {
     this.isRecording = false;
-    // Release the media stream
     this.stream.getTracks().forEach(track => track.stop());
     this.isLoading = false;
     this.isRecorded = false;
@@ -111,6 +113,7 @@ export class VideoRecorderComponent {
     this.previewUrl = null;
   }
 
+  // Function to start over the recording process
   startOver() {
     this.recordingConfirmed = false;
     this.recordRTC = null;
@@ -123,7 +126,7 @@ export class VideoRecorderComponent {
     this.startRecording();
   }
 
-
+  // Functzon to upload the recorded video to Firebase and handle UI messages
   async uploadVideo() {
     try {    
       const recordedBlob = this.recordRTC.getBlob();
