@@ -1,0 +1,32 @@
+<div class="flex flex-col items-center ml-2.5">
+
+  <div class="flex mb-5">
+    <button (click)="toggleVideos()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">
+      {{ showVideos ? 'Hide Videos' : 'Show Videos' }}
+    </button>
+
+    <button (click)="refreshVideos()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      Refresh Videos
+    </button>
+  </div>
+
+  <div *ngIf="showVideos" class="w-full max-w-lg"> 
+    <p-table [value]="videos">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Video URL</th>
+          <th>Timestamp</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-video>
+        <tr>
+          <td>
+            <a href="{{video.blobURL}}" target="_blank" class="text-blue-600 underline">View Video</a>
+          </td>
+          <td>{{ video.timestamp }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+</div>

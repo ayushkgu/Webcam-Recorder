@@ -1,0 +1,7 @@
+/* Add this to your component's CSS file */
+a {
+    color: #007bff; /* Bootstrap default link color */
+    text-decoration: underline; /* Ensure links are underlined */
+    cursor: pointer; /* Ensure the cursor changes to a pointer on hover */
+  }
+  

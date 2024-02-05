@@ -7,22 +7,30 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { VideoRecorderComponent } from './video-recorder/video-recorder.component'; 
+import { VideoRecorderComponent } from './video-recorder/video-recorder.component';
+import { VideoListComponent } from './video-list/video-list.component'; 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TableModule } from 'primeng/table';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    VideoRecorderComponent
+    VideoRecorderComponent,
+    VideoListComponent,
+    VideoListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ButtonModule,
     ToastModule,
-    BrowserAnimationsModule
-    
+    TableModule,
+    BrowserAnimationsModule,
+    HttpClientModule
+
   ],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -11,6 +11,7 @@ import { FirebaseService } from '../firebase.service';
   styleUrls: ['./video-recorder.component.css'],
   providers: [MessageService]
 })
+
 export class VideoRecorderComponent {
   @ViewChild('videoElement') videoElement!: ElementRef;
   recordRTC: any;
@@ -30,14 +31,22 @@ export class VideoRecorderComponent {
 
   async prefetchMediaStream() {
     try {
+      // Request access to the user's webcam and microphone
       this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  
       this.videoElement.nativeElement.srcObject = this.stream;
-      this.isLoading = false; // Update loading state
+  
+      this.videoElement.nativeElement.muted = true;
+  
+      this.videoElement.nativeElement.play();
+  
+      this.isLoading = false; // Update the loading state
     } catch (error) {
       console.error('Error prefetching media stream:', error);
-      // Handle errors, such as user denied camera access
+      // Handle errors, such as the user denying camera access
     }
   }
+  
 
   async startRecording() {
     this.isRecording = true;
@@ -90,6 +99,16 @@ export class VideoRecorderComponent {
     this.previewUrl = null;
     this.startRecording();
     this.isRecorded = false;
+  }
+
+  cancelRecording() {
+    this.isRecording = false;
+    // Release the media stream
+    this.stream.getTracks().forEach(track => track.stop());
+    this.isLoading = false;
+    this.isRecorded = false;
+    this.recordingConfirmed = false;
+    this.previewUrl = null;
   }
 
   startOver() {
