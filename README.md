@@ -1,6 +1,6 @@
 # WebcamRecorder
 
-WebcamRecorder is an Angular-based application that allows users to record videos directly from their webcam, review their recording, and upon confirmation, upload the video to Firebase Storage. The application also saves the video's metadata, including its Firebase Storage URL, to the Firebase Realtime Database. This project is designed to showcase the integration of webcam video recording in a web application using the Angular framework and Firebase as the backend service.
+WebcamRecorder is an Angular-based application that allows users to record videos directly from their webcam, review their recording, and upon confirmation, upload the video to Firebase Storage. The application also saves the video's metadata, including its Firebase Storage URL, to the Firebase Realtime Database. 
 
 ## Features
 
